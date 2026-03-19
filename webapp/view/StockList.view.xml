@@ -1,0 +1,64 @@
+<mvc:View controllerName="com.sap341.smartwarehouse.controller.StockList"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:layout="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <Page id="stockListPage" title="{i18n>stockListTitle}" showNavButton="true" navButtonPress="onNavBack">
+        <headerContent>
+            <Button id="btnRefreshStock" icon="sap-icon://refresh" press="onRefresh" />
+        </headerContent>
+        <content>
+            <VBox class="sapUiMediumMargin animateFadeIn">
+                <VBox class="glassContainer sapUiContentPadding sapUiSmallMarginBottom">
+                    <HBox alignItems="Center" gap="1rem" wrap="Wrap">
+                        <SearchField id="searchStockField" width="250px" placeholder="{i18n>materialId}..." search="onSearchStock" />
+                        <ComboBox id="plantFilter" placeholder="{i18n>plant}" items="{/PlantMasterSet}" selectionChange="onFilterPlantChange">
+                            <core:Item key="{PlantId}" text="{PlantId}" />
+                        </ComboBox>
+                        <ComboBox id="slocFilter" placeholder="{i18n>storageLocation}" items="{/StorageLocationMasterSet}" selectionChange="onFilterStock">
+                            <core:Item key="{StorageLocationId}" text="{StorageLocationId}" />
+                        </ComboBox>
+                        <Button text="{i18n>groupByPlant}" press="onGroupByPlant" />
+                        <Button text="{i18n>btnResetFilters}" type="Transparent" icon="sap-icon://reset" press="onResetFilters" />
+                        <ToolbarSpacer />
+                        <ObjectStatus id="totalStockStatus" title="{i18n>totalResultQty}" text="0" state="Information" />
+                    </HBox>
+                </VBox>
+
+                <Table id="stockTable" items="{path: '/StockSet', parameters: {operationMode: 'Client'}, sorter: {path: 'Plant', group: true}}" growing="true" growingThreshold="20" class="glassContainer">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title text="{i18n>stockListTitle}" level="H4" />
+                            <ToolbarSpacer />
+                            <Button id="btnExportStock" text="Export Excel" icon="sap-icon://excel-attachment" type="Transparent" press="onExportExcel" />
+                            <Button id="btnGoodsReceipt" text="{i18n>btnGoodsReceipt}" type="Accept" icon="sap-icon://add-product" press="onGoodsReceipt" />
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column width="120px"><Text text="{i18n>materialId}" /></Column>
+                        <Column><Text text="{i18n>materialName}" /></Column>
+                        <Column width="80px"><Text text="{i18n>plant}" /></Column>
+                        <Column width="100px"><Text text="{i18n>storageLocation}" /></Column>
+                        <Column hAlign="End" width="120px"><Text text="{i18n>quantity}" /></Column>
+                        <Column hAlign="End" width="80px"><Text text="" /></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem type="Navigation" press="onStockDetail">
+                            <cells>
+                                <Text text="{MaterialId}" />
+                                <Text text="{MaterialName}" />
+                                <Text text="{Plant}" />
+                                <Text text="{StorageLocation}" />
+                                <ObjectNumber number="{path: 'Quantity', type: 'sap.ui.model.type.Float'}" 
+                                              unit="{BaseUnit}"
+                                              state="{path: 'Quantity', formatter: '.formatter.stockStatusState'}" />
+                                <Button icon="sap-icon://edit" type="Transparent" press="onUpdateStock" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

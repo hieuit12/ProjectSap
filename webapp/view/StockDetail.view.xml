@@ -1,0 +1,81 @@
+<mvc:View controllerName="com.sap341.smartwarehouse.controller.StockDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:layout="sap.ui.layout">
+    <Page title="{i18n>stockDetailTitle}" showNavButton="true" navButtonPress="onNavBack">
+        <content>
+            <VBox class="sapUiMediumMargin animateFadeIn">
+                <VBox class="glassContainer sapUiContentPadding">
+                    <HeaderContainer scrollStep="200" showDividers="false">
+                        <GenericTile subheader="{i18n>plant}" header="{Plant}" frameType="OneByHalf" class="sapUiTinyMargin">
+                             <TileContent>
+                                <core:Icon src="sap-icon://factory" size="2rem" color="Default" />
+                             </TileContent>
+                        </GenericTile>
+                        <GenericTile subheader="{i18n>storageLocation}" header="{StorageLocation}" frameType="OneByHalf" class="sapUiTinyMargin">
+                             <TileContent>
+                                <core:Icon src="sap-icon://locate-me" size="2rem" color="Default" />
+                             </TileContent>
+                        </GenericTile>
+                        <TileContent footer="{i18n>quantity}">
+                            <NumericContent value="{Quantity}" unit="{BaseUnit}" valueColor="{path: 'Quantity', formatter: '.formatter.stockStatusState'}" />
+                        </TileContent>
+                    </HeaderContainer>
+
+                    <form:SimpleForm editable="true" layout="ResponsiveGridLayout" class="sapUiMediumMarginTop">
+                        <form:content>
+                            <Label text="{i18n>materialId}" />
+                            <Text text="{MaterialId}" />
+                            <Label text="{i18n>materialName}" />
+                            <Text text="{MaterialName}" />
+                            
+                            <Label text="{i18n>quantity}" />
+                            <Input value="{Quantity}" type="Number" editable="false" />
+                            
+                            <Label text="{i18n>lastChange}" />
+                            <Text text="{path: 'LastChangeDate', formatter: '.formatter.date'}" />
+                        </form:content>
+                    </form:SimpleForm>
+
+                    <HBox justifyContent="End" class="sapUiSmallMarginTop">
+                        <Button text="{i18n>btnGoodsReceipt}" type="Accept" icon="sap-icon://add-product" press="onActionGR" />
+                        <Button text="{i18n>btnUpdateStock}" type="Emphasized" icon="sap-icon://edit" press="onUpdateStock" class="sapUiSmallMarginBegin" />
+                    </HBox>
+
+                    <VBox class="sapUiMediumMarginTop">
+                        <HBox justifyContent="SpaceBetween" alignItems="Center" class="sapUiSmallMarginBottom">
+                            <Title text="{i18n>recentHistory}" level="H4" />
+                            <Button text="{i18n>viewAll}" type="Transparent" press="onViewAllHistory" />
+                        </HBox>
+                        <Table id="recentHistoryStockTable"
+                               items="{path: '/HistorySet', parameters: { $top: 5, $orderby: 'PostingDate desc' }}"
+                               growing="true"
+                               growingThreshold="5"
+                               class="glassContainer">
+                            <columns>
+                                <Column width="150px"><Text text="{i18n>materialDocument}" /></Column>
+                                <Column width="120px"><Text text="{i18n>postingDate}" /></Column>
+                                <Column hAlign="End"><Text text="{i18n>quantity}" /></Column>
+                                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>movementText}" /></Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <ObjectIdentifier title="{MaterialDocument}" text="{Year}" />
+                                        <Text text="{path: 'PostingDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd/MM/yyyy' }}" />
+                                        <ObjectNumber number="{parts: [{path: 'Quantity'}, {path: 'MovementType'}], formatter: '.formatter.formattedHistoryQuantity'}"
+                                                      unit="{BaseUnit}"
+                                                      state="{parts: [{path: 'MovementType'}, {path: 'Quantity'}], formatter: '.formatter.movementState'}" />
+                                        <Text text="{path: 'MovementType', formatter: '.formatter.movementText'}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

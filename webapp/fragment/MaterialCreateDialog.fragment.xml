@@ -1,0 +1,59 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <Dialog id="createMaterialDialog" title="{i18n>dialogCreateMaterial}">
+        <content>
+            <f:SimpleForm id="materialCreateForm" editable="true" layout="ResponsiveGridLayout">
+                <f:content>
+                    <Label text="{i18n>materialId}" required="true" />
+                    <Input value="{formModel>/materialForm/MaterialId}" placeholder="e.g. MAT001" />
+                    
+                    <Label text="{i18n>materialName}" required="true" />
+                    <Input value="{formModel>/materialForm/MaterialName}" placeholder="e.g. Material A" />
+                    
+                   <Label text="{i18n>materialType}" required="true" />
+                    <ComboBox id="matTypeComboBox"
+                              selectedKey="{formModel>/materialForm/MaterialType}"
+                              selectionChange="onChangeMaterialType"
+                              items="{/MaterialTypeMasterSet}">
+                        <core:Item key="{Mtart}" text="{Mtart} - {Mtbez}" />
+                    </ComboBox>
+
+                    <Label text="Valuation Class" required="true" />
+                    <ComboBox id="valClassComboBox"
+                              selectedKey="{formModel>/materialForm/ValuationClass}"
+                              items="{path: '/ValuationClassMasterSet'}">
+                        <core:Item key="{ValuationClass}" text="{ValuationClass} - {Description}" />
+                    </ComboBox>
+                    
+                    <Label text="{i18n>baseUnit}" required="true" />
+                    <ComboBox id="baseUnitComboBox"
+                              selectedKey="{formModel>/materialForm/BaseUnit}"
+                              items="{path: '/BaseUnitMasterSet', length: 2000}">
+                        <core:Item key="{Msehi}" text="{Msehi} - {Msehl}" />
+                    </ComboBox>
+
+                    <Label text="{i18n>plant}" required="true" />
+                    <ComboBox id="plantComboBox" items="{path: '/PlantMasterSet', length: 1000}" selectedKey="{formModel>/materialForm/Plant}" selectionChange="onChangePlant" required="true">
+                        <core:Item key="{PlantId}" text="{PlantId} - {PlantName}" />
+                    </ComboBox>
+
+                    <Label text="{i18n>storageLocation}" required="true" />
+                    <ComboBox id="slocComboBox" 
+                        items="{path: '/StorageLocationMasterSet', length: 1000}"
+                        selectedKey="{formModel>/materialForm/StorageLocation}"
+                        required="true">
+                        <core:Item key="{StorageLocationId}" text="{StorageLocationId} - {StorageLocationName}" />
+                    </ComboBox>
+                </f:content>
+            </f:SimpleForm>
+        </content>
+        <beginButton>
+            <Button text="{i18n>btnSave}" type="Emphasized" press="onSaveMaterial" />
+        </beginButton>
+        <endButton>
+            <Button text="{i18n>btnCancel}" press="onCancelCreate" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

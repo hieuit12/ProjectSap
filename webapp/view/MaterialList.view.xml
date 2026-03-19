@@ -1,0 +1,53 @@
+<mvc:View controllerName="com.sap341.smartwarehouse.controller.MaterialList"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:layout="sap.ui.layout">
+    <Page title="{i18n>materialListTitle}" showNavButton="true" navButtonPress="onNavBack" backgroundDesign="Transparent">
+        <headerContent>
+            <Button icon="sap-icon://refresh" press="onRefresh" type="Transparent" />
+            <Button icon="sap-icon://sort" press="onSort" type="Transparent" />
+        </headerContent>
+        <content>
+            <VBox class="sapUiMediumMargin animateFadeIn">
+                <!-- Header tools -->
+                <VBox class="glassContainer sapUiContentPadding sapUiSmallMarginBottom">
+                    <HBox alignItems="Center" gap="1rem" wrap="Wrap">
+                        <SearchField id="searchField" width="350px" placeholder="{i18n>searchPlaceholder}" search="onSearch" />
+                       <ComboBox id="typeFilter" 
+                                  placeholder="{i18n>materialType}" 
+                                  selectionChange="onFilterType"
+                                  items="{/MaterialTypeMasterSet}">
+                            <core:Item xmlns:core="sap.ui.core" key="{Mtart}" text="{Mtart} - {Mtbez}" />
+                        </ComboBox>
+                        <Button text="{i18n>btnResetFilters}" type="Transparent" icon="sap-icon://reset" press="onResetFilters" />
+                        <ToolbarSpacer />
+                        <Button text="{i18n>btnAddMaterial}" type="Emphasized" icon="sap-icon://add" press="onAddMaterial" />
+                    </HBox>
+                </VBox>
+
+                <!-- Table -->
+                <Table id="materialTable" items="{path: '/MaterialSet'}" growing="true" growingThreshold="20" class="glassContainer">
+                    <columns>
+                        <Column width="180px" importance="High"><Text text="{i18n>materialId}" /></Column>
+                        <Column importance="High"><Text text="{i18n>materialName}" /></Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>materialType}" /></Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" hAlign="End"><Text text="{i18n>baseUnit}" /></Column>
+                        <Column width="120px" hAlign="End"></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem type="Navigation" press="onRowPress">
+                            <cells>
+                                <Text text="{MaterialId}" class="sapUiTinyMarginTop sapUiTinyMarginBottom" />
+                                <Text text="{MaterialName}" />
+                                <ObjectStatus text="{MaterialType}" state="Information" inverted="true" />
+                                <Text text="{BaseUnit}" />
+                                <Button text="{i18n>btnGoodsReceipt}" icon="sap-icon://add-product" press="onQuickGR" type="Transparent" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

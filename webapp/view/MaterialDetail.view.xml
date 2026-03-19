@@ -1,0 +1,123 @@
+<mvc:View controllerName="com.sap341.smartwarehouse.controller.MaterialDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:uxap="sap.uxap"
+    xmlns:core="sap.ui.core">
+    <Page showHeader="false" showNavButton="true" navButtonPress="onNavBack">
+        <content>
+            <uxap:ObjectPageLayout id="ObjectPageLayout" alwaysShowContentHeader="true" preserveHeaderStateOnScroll="true" headerDesign="Light">
+                <uxap:headerTitle>
+                    <uxap:ObjectPageDynamicHeaderTitle>
+                        <uxap:expandedHeading>
+                            <Title text="{MaterialId}" wrapping="true" level="H1"/>
+                        </uxap:expandedHeading>
+                        <uxap:snappedHeading>
+                            <Title text="{MaterialId} - {MaterialName}" wrapping="true" />
+                        </uxap:snappedHeading>
+                        <uxap:expandedContent>
+                            <Text text="{MaterialName}" />
+                        </uxap:expandedContent>
+                        <uxap:actions>
+                            <Button text="{i18n>btnRefresh}" icon="sap-icon://refresh" type="Transparent" press="onRefresh" />
+                            <Button text="{i18n>btnGoodsReceipt}" icon="sap-icon://add-product" type="Accept" press="onQuickGR" />
+                            <Button text="{i18n>goToStock}" icon="sap-icon://inventory" type="Transparent" press="onGoToStock" />
+                        </uxap:actions>
+                    </uxap:ObjectPageDynamicHeaderTitle>
+                </uxap:headerTitle>
+
+                <uxap:headerContent>
+                    <FlexBox wrap="Wrap" fitContainer="true">
+                        <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+                            <Title text="{i18n>materialType}" level="H6" />
+                            <ObjectStatus text="{MaterialType}" state="Information" inverted="true" />
+                        </VBox>
+                        <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+                            <Title text="{i18n>baseUnit}" level="H6" />
+                            <Text text="{BaseUnit}" />
+                        </VBox>
+                        <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+                            <Title text="{i18n>stockSummary}" level="H6" />
+                            <HBox alignItems="Center" wrap="Wrap" class="sapUiTinyMarginTop">
+                                <ObjectNumber number="{materialSummary>/TotalQty}" unit="{BaseUnit}" state="Information" class="sapUiSmallMarginEnd" />
+                                <ObjectStatus text="{i18n>totalPlants}: {materialSummary>/TotalPlants}" state="None" class="sapUiSmallMarginEnd" />
+                                <ObjectStatus text="{i18n>totalSlocs}: {materialSummary>/TotalSlocs}" state="None" />
+                            </HBox>
+                        </VBox>
+                    </FlexBox>
+                </uxap:headerContent>
+
+                <uxap:sections>
+                    <uxap:ObjectPageSection title="{i18n>labelStockInfo}">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection>
+                                <uxap:blocks>
+                                    <Table id="stockTableDetail" items="{path: '/StockSet'}" class="glassContainer">
+                                        <columns>
+                                            <Column><Text text="{i18n>plant}" /></Column>
+                                            <Column><Text text="{i18n>storageLocation}" /></Column>
+                                            <Column hAlign="End"><Text text="{i18n>quantity}" /></Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem type="Navigation" press="onNavToStockDetail">
+                                                <cells>
+                                                    <Text text="{Plant}" />
+                                                    <Text text="{StorageLocation}" />
+                                                    <ObjectNumber number="{path: 'Quantity', formatter: '.formatter.quantity'}" 
+                                                                  unit="{BaseUnit}" 
+                                                                  state="{path: 'Quantity', formatter: '.formatter.stockStatusState'}" />
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                    <uxap:ObjectPageSection title="{i18n>historyTitle}">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection>
+                                <uxap:blocks>
+                                    <VBox class="glassContainer sapUiContentPadding">
+                                        <HBox justifyContent="SpaceBetween" alignItems="Center" class="sapUiSmallMarginBottom">
+                                            <Title text="{i18n>recentHistory}" level="H4" />
+                                            <Button text="{i18n>viewAll}" type="Transparent" press="onViewAllHistory" />
+                                        </HBox>
+                                        <Table id="historyTableDetail"
+                                               items="{path: '/HistorySet', parameters: { $top: 5, $orderby: 'PostingDate desc' }}"
+                                               growing="true"
+                                               growingThreshold="5">
+                                        <columns>
+                                            <Column><Text text="{i18n>materialDocument}" /></Column>
+                                            <Column><Text text="{i18n>postingDate}" /></Column>
+                                            <Column><Text text="{i18n>movementText}" /></Column>
+                                            <Column hAlign="End"><Text text="{i18n>quantity}" /></Column>
+                                            <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>plantSloc}" /></Column>
+                                            <Column hAlign="Center"><Text text="{i18n>status}" /></Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem>
+                                                <cells>
+                                                    <ObjectIdentifier title="{MaterialDocument}" text="{Year}" />
+                                                    <Text text="{path: 'PostingDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd/MM/yyyy' }}" />
+                                                    <Text text="{path: 'MovementType', formatter: '.formatter.movementText'}" />
+                                                    <ObjectNumber number="{parts: [{path: 'Quantity'}, {path: 'MovementType'}], formatter: '.formatter.formattedHistoryQuantity'}" 
+                                                                  unit="{BaseUnit}" 
+                                                                  state="{parts: [{path: 'MovementType'}, {path: 'Quantity'}], formatter: '.formatter.movementState'}" />
+                                                    <Text text="{Plant} / {StorageLocation}" />
+                                                    <ObjectStatus text="{Status}" state="Success" icon="sap-icon://sys-enter-2" />
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                        </Table>
+                                    </VBox>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+                </uxap:sections>
+            </uxap:ObjectPageLayout>
+        </content>
+    </Page>
+</mvc:View>

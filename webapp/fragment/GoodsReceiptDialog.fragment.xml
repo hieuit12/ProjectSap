@@ -1,0 +1,46 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <Dialog id="goodsReceiptDialog" title="{i18n>dialogGoodsReceipt}">
+        <content>
+            <f:SimpleForm id="goodsReceiptForm" editable="true" layout="ResponsiveGridLayout">
+                <f:content>
+                    <Label text="{i18n>materialId}" required="true" />
+                    <Input value="{formModel>/goodsReceiptForm/MaterialId}" required="true" />
+                    
+                    <Label text="{i18n>plant}" required="true" />
+                    <ComboBox id="grPlantComboBox" items="{/PlantMasterSet}" selectedKey="{formModel>/goodsReceiptForm/Plant}" selectionChange="onChangePlant" required="true">
+                        <core:Item key="{PlantId}" text="{PlantId} - {PlantName}" />
+                    </ComboBox>
+                    
+                    <Label text="{i18n>storageLocation}" required="true" />
+                    <ComboBox id="grSLocComboBox" 
+                        items="{path: '/StorageLocationMasterSet'}"
+                        selectedKey="{formModel>/goodsReceiptForm/StorageLocation}"
+                        required="true">
+                        <core:Item key="{StorageLocationId}" text="{StorageLocationId} - {StorageLocationName}" />
+                    </ComboBox>
+                    
+                    <Label text="{i18n>quantity}" required="true" />
+                    <StepInput value="{formModel>/goodsReceiptForm/Quantity}" min="0.001" step="1" />
+                    
+                    <Label text="{i18n>postingDate}" />
+                    <DatePicker value="{path: 'formModel>/goodsReceiptForm/PostingDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}" />
+                    
+                    <Label text="{i18n>docDate}" />
+                    <DatePicker value="{path: 'formModel>/goodsReceiptForm/DocumentDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}" />
+                    
+                    <Label text="{i18n>remark}" />
+                    <TextArea value="{formModel>/goodsReceiptForm/Remark}" rows="2" />
+                </f:content>
+            </f:SimpleForm>
+        </content>
+        <beginButton>
+            <Button text="{i18n>btnPost}" type="Emphasized" press="onConfirmGoodsReceipt" />
+        </beginButton>
+        <endButton>
+            <Button text="{i18n>btnCancel}" press="onCancelGoodsReceipt" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

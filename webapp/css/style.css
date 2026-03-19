@@ -1,0 +1,58 @@
+/* Global Styles */
+:root {
+    --primary-gradient: linear-gradient(135deg, #0062E6 0%, #33AEFF 100%);
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+.animateFadeIn {
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.glassContainer {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: var(--glass-shadow);
+    border-radius: 12px !important;
+}
+
+.tileLayout {
+    background: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-radius: 12px !important;
+    border-left: 4px solid #0062E6;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.tileLayout:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
+
+.kpiValue {
+    font-size: 2.5rem !important;
+    font-weight: 700 !important;
+    color: #1d1d1f;
+}
+
+.sapMGTContent {
+    background: transparent !important;
+}
+
+/* Specific enhancements */
+.sapMListShowSeparatorsAll .sapMLIB {
+    border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+}
+
+.sapmObjectPageLayout-TransparentHeader .sapmObjectPageHeader {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(8px);
+}

@@ -1,0 +1,100 @@
+<mvc:View controllerName="com.sap341.smartwarehouse.controller.GoodsReceiptHistory"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core">
+    <Page title="{i18n>historyTitle}" showNavButton="true" navButtonPress="onNavBack" backgroundDesign="Transparent">
+        <headerContent>
+            <Button icon="sap-icon://refresh" press="onRefresh" type="Transparent" />
+        </headerContent>
+        <content>
+            <VBox class="sapUiMediumMargin animateFadeIn">
+                <VBox class="glassContainer sapUiSmallMarginBottom">
+                    <fb:FilterBar id="filterBar" header="{i18n>searchPlaceholder}" reset="onReset" clear="onReset" search="onSearch" showRestoreButton="true" showClearButton="true" xmlns:fb="sap.ui.comp.filterbar">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem name="MaterialId" label="{i18n>materialId}" groupName="Main" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="filterMaterial" placeholder="{i18n>searchPlaceholder}" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem name="Plant" label="{i18n>plant}" groupName="Main" visibleInFilterBar="true">
+                                <fb:control>
+                                    <ComboBox id="filterPlant" items="{path: '/PlantMasterSet'}" selectionChange="onPlantChange">
+                                        <core:Item key="{PlantId}" text="{PlantId} - {PlantName}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem name="StorageLocation" label="{i18n>storageLocation}" groupName="Main" visibleInFilterBar="true">
+                                <fb:control>
+                                    <ComboBox id="filterStorageLocation" items="{path: '/StorageLocationMasterSet'}">
+                                        <core:Item key="{StorageLocationId}" text="{StorageLocationId} - {StorageLocationName}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem name="PostingFromDate" label="{i18n>postingFromDate}" groupName="Main" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DatePicker id="filterPostingFromDate" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem name="PostingToDate" label="{i18n>postingToDate}" groupName="Main" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DatePicker id="filterPostingToDate" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem name="DocumentFromDate" label="{i18n>documentFromDate}" groupName="More" visibleInFilterBar="false">
+                                <fb:control>
+                                    <DatePicker id="filterDocumentFromDate" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem name="DocumentToDate" label="{i18n>documentToDate}" groupName="More" visibleInFilterBar="false">
+                                <fb:control>
+                                    <DatePicker id="filterDocumentToDate" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+                    <HBox justifyContent="End" class="sapUiTinyMarginTop">
+                        <Button text="{i18n>btnResetFilters}" icon="sap-icon://reset" type="Transparent" press="onReset" class="sapUiTinyMarginEnd" />
+                        <Button text="Go" type="Emphasized" press="onSearch" />
+                    </HBox>
+                </VBox>
+                
+                <Table id="historyTable" items="{path: '/HistorySet', sorter: {path: 'PostingDate', descending: true}}" growing="true" growingThreshold="50" class="glassContainer">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title text="{i18n>historyRecentTransactions}" level="H3" />
+                            <ToolbarSpacer />
+                            <Button id="btnExportHistory" text="Export Excel" icon="sap-icon://excel-attachment" type="Transparent" press="onExportExcel" />
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column width="150px"><Text text="{i18n>materialDocument}" /></Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>postingDate}" /></Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>docDate}" /></Column>
+                        <Column importance="High"><Text text="{i18n>materialId}" /></Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>movementText}" /></Column>
+                        <Column hAlign="End" importance="High"><Text text="{i18n>quantity}" /></Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>plantSloc}" /></Column>
+                        <Column hAlign="Center"><Text text="{i18n>status}" /></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem type="Active" press="onOpenHistoryDetail">
+                            <cells>
+                                <ObjectIdentifier title="{MaterialDocument}" text="{Year}" />
+                                <Text text="{path: 'PostingDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd/MM/yyyy' }}" />
+                                <Text text="{path: 'DocumentDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd/MM/yyyy' }}" />
+                                <ObjectIdentifier title="{MaterialId}" text="{MaterialName}" />
+                                <Text text="{path: 'MovementType', formatter: '.formatter.movementText'} ({MovementType})" />
+                                <ObjectNumber number="{parts: [{path: 'Quantity'}, {path: 'MovementType'}], formatter: '.formatter.formattedHistoryQuantity'}"
+                                              unit="{BaseUnit}"
+                                              state="{parts: [{path: 'MovementType'}, {path: 'Quantity'}], formatter: '.formatter.movementState'}" />
+                                <Text text="{Plant} / {StorageLocation}" />
+                                <ObjectStatus text="{Status}" state="Success" icon="sap-icon://sys-enter-2" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

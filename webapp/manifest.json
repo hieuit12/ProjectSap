@@ -1,0 +1,182 @@
+{
+  "_version": "1.48.0",
+  "sap.app": {
+    "id": "com.sap341.smartwarehouse",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.20.4",
+      "toolsId": "30c651c8-e600-410e-a46d-7a373d7aecdc"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/sap/opu/odata/sap/ZGW_WH_ODATA_SRV/?sap-client=324",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.108.33",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.f": {},
+        "sap.tnt": {},
+        "sap.ui.comp": {},
+        "sap.ui.layout": {},
+        "sap.uxap": {},
+        "sap.viz": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.sap341.smartwarehouse.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "refreshAfterChange": false
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "async": true,
+        "viewPath": "com.sap341.smartwarehouse.view",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "clearControlAggregation": false
+      },
+      "routes": [
+        {
+          "name": "Dashboard",
+          "pattern": "",
+          "target": [
+            "TargetDashboard"
+          ]
+        },
+        {
+          "name": "MaterialList",
+          "pattern": "materials",
+          "target": [
+            "TargetMaterialList"
+          ]
+        },
+        {
+          "name": "MaterialDetail",
+          "pattern": "materials/{MaterialId}",
+          "target": [
+            "TargetMaterialDetail"
+          ]
+        },
+        {
+          "name": "StockList",
+          "pattern": "stock",
+          "target": [
+            "TargetStockList"
+          ]
+        },
+        {
+          "name": "StockDetail",
+          "pattern": "stockDetail/{MaterialId}/{Plant}/{StorageLocation}",
+          "target": [
+            "TargetStockDetail"
+          ]
+        },
+        {
+          "name": "History",
+          "pattern": "history",
+          "target": [
+            "TargetGoodsReceiptHistory"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetDashboard": {
+          "viewType": "XML",
+          "viewId": "Dashboard",
+          "viewName": "Dashboard"
+        },
+        "TargetMaterialList": {
+          "viewType": "XML",
+          "viewId": "MaterialList",
+          "viewName": "MaterialList"
+        },
+        "TargetMaterialDetail": {
+          "viewType": "XML",
+          "viewId": "MaterialDetail",
+          "viewName": "MaterialDetail"
+        },
+        "TargetStockList": {
+          "viewType": "XML",
+          "viewId": "StockList",
+          "viewName": "StockList"
+        },
+        "TargetStockDetail": {
+          "viewType": "XML",
+          "viewId": "StockDetail",
+          "viewName": "StockDetail"
+        },
+        "TargetGoodsReceiptHistory": {
+          "viewType": "XML",
+          "viewId": "GoodsReceiptHistory",
+          "viewName": "GoodsReceiptHistory"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "com.sap341.smartwarehouse.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "App"
+    }
+  }
+}
