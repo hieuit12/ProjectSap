@@ -1,58 +1,273 @@
 /* Global Styles */
 :root {
     --primary-gradient: linear-gradient(135deg, #0062E6 0%, #33AEFF 100%);
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.3);
+    --success-gradient: linear-gradient(135deg, #2ECC71 0%, #27AE60 100%);
+    --warning-gradient: linear-gradient(135deg, #F39C12 0%, #E67E22 100%);
+    --danger-gradient: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.4);
     --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
 }
 
+/* Animations */
 .animateFadeIn {
     animation: fadeIn 0.8s ease-out;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Glass Morphism */
 .glassContainer {
     background: var(--glass-bg) !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border) !important;
     box-shadow: var(--glass-shadow);
-    border-radius: 12px !important;
+    border-radius: 16px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.tileLayout {
-    background: white;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    border-radius: 12px !important;
-    border-left: 4px solid #0062E6;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+.glassContainer:hover {
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.25);
+    transform: translateY(-2px);
 }
 
-.tileLayout:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+/* KPI Tiles - Enhanced */
+.sapMGT {
+    border-radius: 16px !important;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
 }
 
-.kpiValue {
-    font-size: 2.5rem !important;
+.sapMGT::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0,98,230,0.05) 0%, rgba(51,174,255,0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sapMGT:hover::before {
+    opacity: 1;
+}
+
+.sapMGT:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 16px 48px rgba(0,98,230,0.2);
+}
+
+.sapMGT:active {
+    transform: translateY(-4px) scale(0.98);
+}
+
+/* Numeric Content Animation */
+.sapMNCValue {
+    animation: scaleIn 0.6s ease-out;
     font-weight: 700 !important;
-    color: #1d1d1f;
+    font-size: 2.5rem !important;
 }
 
-.sapMGTContent {
-    background: transparent !important;
+/* Table Enhancements */
+.sapMListTbl tbody tr {
+    transition: all 0.3s ease;
 }
 
-/* Specific enhancements */
-.sapMListShowSeparatorsAll .sapMLIB {
-    border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+.sapMListTbl tbody tr:hover {
+    background: rgba(0,98,230,0.05) !important;
+    transform: translateX(4px);
+    box-shadow: -4px 0 0 0 #0062E6;
 }
 
-.sapmObjectPageLayout-TransparentHeader .sapmObjectPageHeader {
-    background-color: var(--glass-bg);
-    backdrop-filter: blur(8px);
+/* Low Stock Alert - Pulsing Effect */
+.sapMObjStatusError {
+    animation: pulse 2s infinite;
+}
+
+/* Button Enhancements */
+.sapMBtn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 8px !important;
+}
+
+.sapMBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.sapMBtn:active {
+    transform: translateY(0);
+}
+
+.sapMBtnEmphasized {
+    background: var(--primary-gradient) !important;
+    border: none !important;
+}
+
+.sapMBtnAccept {
+    background: var(--success-gradient) !important;
+    border: none !important;
+}
+
+/* Search Field Enhancement */
+.sapMSF {
+    border-radius: 24px !important;
+    transition: all 0.3s ease;
+}
+
+.sapMSF:focus-within {
+    box-shadow: 0 4px 16px rgba(0,98,230,0.2);
+    transform: scale(1.02);
+}
+
+/* ComboBox Enhancement */
+.sapMComboBox {
+    border-radius: 8px !important;
+    transition: all 0.3s ease;
+}
+
+.sapMComboBox:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Panel Enhancement */
+.sapMPanel {
+    border-radius: 16px !important;
+    overflow: hidden;
+    animation: slideInLeft 0.6s ease-out;
+}
+
+/* Dialog Enhancement */
+.sapMDialog {
+    border-radius: 20px !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: scaleIn 0.3s ease-out;
+}
+
+/* Object Status Colors */
+.sapMObjStatusError {
+    background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%) !important;
+    color: white !important;
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.sapMObjStatusWarning {
+    background: linear-gradient(135deg, #F39C12 0%, #E67E22 100%) !important;
+    color: white !important;
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.sapMObjStatusSuccess {
+    background: linear-gradient(135deg, #2ECC71 0%, #27AE60 100%) !important;
+    color: white !important;
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Override SAP default text color for ObjectStatus */
+.sapMObjStatusError .sapMObjStatusText,
+.sapMObjStatusError .sapMObjStatusIcon {
+    color: white !important;
+}
+
+.sapMObjStatusWarning .sapMObjStatusText,
+.sapMObjStatusWarning .sapMObjStatusIcon {
+    color: white !important;
+}
+
+.sapMObjStatusSuccess .sapMObjStatusText,
+.sapMObjStatusSuccess .sapMObjStatusIcon {
+    color: white !important;
+}
+
+/* Title Enhancement */
+.sapMTitle {
+    font-weight: 600 !important;
+    letter-spacing: -0.5px;
+}
+
+/* Toolbar Enhancement */
+.sapMTB {
+    border-radius: 12px !important;
+}
+
+/* Loading Indicator */
+.sapUiLocalBusyIndicator {
+    backdrop-filter: blur(4px);
+    background: rgba(255,255,255,0.8) !important;
+}
+
+/* Responsive Animations */
+@media (max-width: 768px) {
+    .sapMGT:hover {
+        transform: translateY(-4px) scale(1.01);
+    }
+}
+
+/* Stagger Animation for Lists */
+.sapMListTbl tbody tr:nth-child(1) { animation: slideInLeft 0.4s ease-out; }
+.sapMListTbl tbody tr:nth-child(2) { animation: slideInLeft 0.5s ease-out; }
+.sapMListTbl tbody tr:nth-child(3) { animation: slideInLeft 0.6s ease-out; }
+.sapMListTbl tbody tr:nth-child(4) { animation: slideInLeft 0.7s ease-out; }
+.sapMListTbl tbody tr:nth-child(5) { animation: slideInLeft 0.8s ease-out; }
+
+/* Icon Enhancement */
+.sapUiIcon {
+    transition: all 0.3s ease;
+}
+
+.sapMBtn:hover .sapUiIcon {
+    transform: scale(1.1);
+}
+
+/* Chart Dialog Enhancement */
+#kpiChartDialog .sapMDialogSection {
+    padding: 24px;
+}
+
+/* Smooth Scrolling */
+* {
+    scroll-behavior: smooth;
+}
+
+/* Focus Enhancement */
+*:focus {
+    outline: 2px solid rgba(0,98,230,0.4);
+    outline-offset: 2px;
 }

@@ -167,6 +167,47 @@ sap.ui.define([
 
         onNavToMaterialList: function () { this.getRouter().navTo("MaterialList"); },
         onNavToStockList:    function () { this.getRouter().navTo("StockList"); },
-        onNavToHistory:      function () { this.getRouter().navTo("History"); }
+        onNavToHistory:      function () { this.getRouter().navTo("History"); },
+
+        /**
+         * Click vào Low Stock Item → Navigate to Material Detail
+         */
+        onLowStockItemPress: function (oEvent) {
+            var oItem = oEvent.getSource();
+            var oCtx = oItem.getBindingContext("lowStockModel");
+            var sMaterialId = oCtx.getProperty("MaterialId");
+            
+            if (sMaterialId) {
+                this.getRouter().navTo("MaterialDetail", {
+                    MaterialId: sMaterialId
+                });
+            }
+        },
+
+        /**
+         * Click vào Recent History Item → Navigate to History with Material filter
+         */
+        onRecentHistoryPress: function (oEvent) {
+            var oItem = oEvent.getSource();
+            var oCtx = oItem.getBindingContext();
+            var sMaterialId = oCtx.getProperty("MaterialId");
+            
+            if (sMaterialId) {
+                // Navigate to History page
+                this.getRouter().navTo("History");
+                
+                // Set filter sau khi navigate (delay nhỏ để page load xong)
+                setTimeout(function() {
+                    var oHistoryView = this.getOwnerComponent().getRootControl().byId("GoodsReceiptHistory");
+                    if (oHistoryView) {
+                        var oController = oHistoryView.getController();
+                        if (oController && oController.byId("filterMaterial")) {
+                            oController.byId("filterMaterial").setValue(sMaterialId);
+                            oController.onSearch();
+                        }
+                    }
+                }.bind(this), 300);
+            }
+        }
     });
 });

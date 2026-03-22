@@ -117,7 +117,7 @@
                             <Column hAlign="End" width="100px"><Text text="Quantity" /></Column>
                         </columns>
                         <items>
-                            <ColumnListItem type="Navigation" press="onNavToStockList">
+                            <ColumnListItem type="Navigation" press="onLowStockItemPress">
                                 <cells>
                                     <ObjectStatus text="{lowStockModel>MaterialId}" state="Error" icon="sap-icon://alert" />
                                     <Text text="{lowStockModel>MaterialName}" />
@@ -147,7 +147,7 @@
                         <Column hAlign="End"><Text text="{i18n>quantity}" /></Column>
                     </columns>
                     <items>
-                        <ColumnListItem type="Navigation" press="onNavToHistory">
+                        <ColumnListItem type="Navigation" press="onRecentHistoryPress">
                             <cells>
                                 <ObjectIdentifier title="{MaterialId}" text="{MaterialName}" />
                                 <Text text="{path: 'PostingDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd/MM/yyyy' }}" />

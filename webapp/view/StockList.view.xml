@@ -26,7 +26,7 @@
                     </HBox>
                 </VBox>
 
-                <Table id="stockTable" items="{path: '/StockSet', parameters: {operationMode: 'Client'}, sorter: {path: 'Plant', group: true}}" growing="true" growingThreshold="20" class="glassContainer">
+                <Table id="stockTable" items="{path: '/StockSet', parameters: {operationMode: 'Client'}, sorter: {path: 'Plant', group: true}}" growing="true" growingThreshold="20" class="glassContainer animateFadeIn">
                     <headerToolbar>
                         <OverflowToolbar>
                             <Title text="{i18n>stockListTitle}" level="H4" />

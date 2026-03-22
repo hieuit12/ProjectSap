@@ -217,6 +217,13 @@ sap.ui.define([
 				}
 				var oData = this.getView().getModel("formModel").getProperty("/goodsReceiptForm");
 
+				// Validate quantity > 0 (phải lớn hơn 0, không cho phép = 0 hoặc số âm)
+				var fQuantity = parseFloat(oData.Quantity);
+				if (isNaN(fQuantity) || fQuantity <= 0) {
+					MessageBox.error(this.getText("msgInvalidQuantity") || "Số lượng phải lớn hơn 0");
+					return;
+				}
+
 				// Ép IN HOA cho mã key SAP (Lỗi 2 fix)
 				oData.MaterialId      = oData.MaterialId ? oData.MaterialId.toUpperCase() : oData.MaterialId;
 				oData.Plant           = oData.Plant ? oData.Plant.toUpperCase() : oData.Plant;

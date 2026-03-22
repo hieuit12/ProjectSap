@@ -59,7 +59,7 @@
                     </HBox>
                 </VBox>
                 
-                <Table id="historyTable" items="{path: '/HistorySet', sorter: {path: 'PostingDate', descending: true}}" growing="true" growingThreshold="50" class="glassContainer">
+                <Table id="historyTable" items="{path: '/HistorySet', sorter: {path: 'PostingDate', descending: true}}" growing="true" growingThreshold="50" class="glassContainer animateFadeIn">
                     <headerToolbar>
                         <OverflowToolbar>
                             <Title text="{i18n>historyRecentTransactions}" level="H3" />
